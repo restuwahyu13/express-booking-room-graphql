@@ -1,0 +1,6 @@
+const { app, server } = require('./src/app')
+require('./src/middlewares/middleware.plugin')(app)
+require('./src/middlewares/middleware.route')(app)
+const serverHttp = require('http').createServer(app)
+server.applyMiddleware({ app })
+serverHttp.listen(process.env.PORT, () => console.log(`Server is running on port ${serverHttp.address().port}`))

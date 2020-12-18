@@ -1,0 +1,14 @@
+{
+	"parserOptions": {
+		"ecmaVersion": 2015,
+		"sourceType": "module"
+	},
+	"parser": "babel-eslint",
+	"extends": ["eslint:recommended", "plugin:node/recommended"],
+	"plugins": ["graphql"],
+	"rules": {
+		"node/no-unpublished-require": 1,
+		"node/no-unpublished-import": 1,
+		"node/no-unsupported-features/es-syntax": 0
+	}
+}
