@@ -5,7 +5,14 @@ import { tempMailCheckin } from '../../../templates/template.checkIn'
 import { dateFormat } from '../../../utils/util.dateFormat'
 import { errorMessage } from '../../../utils/util.errorMessage'
 
-export const checkIn = async (_, { id }) => {
+export const checkIn = async (_, { id }, { isAuthJwt }) => {
+	if (!isAuthJwt) {
+		throw errorMessage({
+			status: 401,
+			message: 'Unauthorization access token expired or invalid'
+		})
+	}
+
 	const checkIn = await knex('bookings')
 		.join('users', 'bookings.user_id', 'users.user_id')
 		.where({ 'bookings.order_id': id })

@@ -2,7 +2,14 @@ import knex from '../../../databases'
 import { errorMessage } from '../../../utils/util.errorMessage'
 import { fileUpload } from '../../../utils/util.upload'
 
-export const roomsUpdate = async (_, { id, input, photo }) => {
+export const roomsUpdate = async (_, { id, input, photo }, { isAuthRole }) => {
+	if (!isAuthRole) {
+		throw errorMessage({
+			status: 403,
+			message: 'Forbidden admin area cannot access this API'
+		})
+	}
+
 	const { room_name, room_capacity, room_status } = input
 	const { filename, createReadStream } = await photo.promise
 	fileUpload({ filename, stream: createReadStream() })

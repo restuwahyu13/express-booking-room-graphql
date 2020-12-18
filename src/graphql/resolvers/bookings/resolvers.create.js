@@ -5,9 +5,15 @@ import { tempMailBooking } from '../../../templates/template.booking'
 import { orderId } from '../../../utils/util.orderId'
 import { errorMessage } from '../../../utils/util.errorMessage'
 
-export const bookingsCreate = async (_, { input }) => {
-	const { user_id, room_id, total_person, booking_time, noted } = input
+export const bookingsCreate = async (_, { input }, { isAuthJwt }) => {
+	if (!isAuthJwt) {
+		throw errorMessage({
+			status: 401,
+			message: 'Unauthorization access token expired or invalid'
+		})
+	}
 
+	const { user_id, room_id, total_person, booking_time, noted } = input
 	const findRoom = await knex('rooms').where({ room_id: room_id }).select(['room_capacity', 'room_status'])
 	const findUser = await knex('users').where({ user_id }).select('email')
 

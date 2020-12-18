@@ -1,7 +1,14 @@
 import knex from '../../../databases'
 import { errorMessage } from './../../../utils/util.errorMessage'
 
-export const roomsResults = async () => {
+export const roomsResults = async (_, args, { isAuthJwt }) => {
+	if (!isAuthJwt) {
+		throw errorMessage({
+			status: 401,
+			message: 'Unauthorization access token expired or invalid'
+		})
+	}
+
 	const rooms = await knex('rooms').select()
 
 	if (rooms.length < 1) {

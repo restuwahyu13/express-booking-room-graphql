@@ -1,7 +1,14 @@
 import knex from '../../../databases'
 import { errorMessage } from '../../../utils/util.errorMessage'
 
-export const checkOrder = async (_, { id }) => {
+export const checkOrder = async (_, { id }, { isAuthJwt }) => {
+	if (!isAuthJwt) {
+		throw errorMessage({
+			status: 401,
+			message: 'Unauthorization access token expired or invalid'
+		})
+	}
+
 	const booking = await knex('bookings')
 		.join('users', 'bookings.user_id', 'users.user_id')
 		.join('rooms', 'bookings.room_id', 'rooms.room_id')

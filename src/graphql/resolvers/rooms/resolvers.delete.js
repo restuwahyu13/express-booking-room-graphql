@@ -3,7 +3,14 @@ import { errorMessage } from './../../../utils/util.errorMessage'
 import { existsSync, unlink } from 'fs'
 import { resolve } from 'path'
 
-export const roomsDelete = async (_, { id }) => {
+export const roomsDelete = async (_, { id }, { isAuthRole }) => {
+	if (!isAuthRole) {
+		throw errorMessage({
+			status: 403,
+			message: 'Forbidden admin area cannot access this API'
+		})
+	}
+
 	const findRoom = await knex('rooms').where({ room_id: id }).select()
 
 	if (findRoom.length < 1) {

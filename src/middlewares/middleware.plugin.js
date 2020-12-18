@@ -8,6 +8,8 @@ import helmet from 'helmet'
 import cors from 'cors'
 import morgan from 'morgan'
 import { bookingTimeCronjob } from './middleware.cronjob'
+import { authJwt } from './middleware.auth'
+import { authRole } from './middleware.role'
 
 module.exports = (app) => {
 	app.use(bodyParser.json())
@@ -17,6 +19,8 @@ module.exports = (app) => {
 	app.use(helmet({ contentSecurityPolicy: false }))
 	app.use(compression({ level: 9, strategy: zlib.constants.Z_RLE }))
 	app.use(graphqlUploadExpress({ maxFileSize: 1000000, maxFiles: 5 }))
+	app.use(authJwt())
+	app.use(authRole())
 	app.use(bookingTimeCronjob())
 	if (process.env.NODE_ENV !== 'production') {
 		app.use(morgan('dev'))

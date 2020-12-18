@@ -3,7 +3,14 @@ import { hashPassword } from '../../../utils/util.encrypt'
 import { errorMessage } from '../../../utils/util.errorMessage'
 import { fileUpload } from '../../../utils/util.upload'
 
-export const adminsUpdate = async (_, { id, input, photo }) => {
+export const adminsUpdate = async (_, { id, input, photo }, { isAuthRole }) => {
+	if (!isAuthRole) {
+		throw errorMessage({
+			status: 403,
+			message: 'Forbidden admin area cannot access this API'
+		})
+	}
+
 	const { email, password } = input
 	const { filename, createReadStream } = await photo.promise
 	fileUpload({ filename, stream: createReadStream() })

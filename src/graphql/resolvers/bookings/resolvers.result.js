@@ -1,7 +1,14 @@
 import knex from '../../../databases'
 import { errorMessage } from '../../../utils/util.errorMessage'
 
-export const bookingsResult = async (_, { id }) => {
+export const bookingsResult = async (_, { id }, { isAuthRole }) => {
+	if (!isAuthRole) {
+		throw errorMessage({
+			status: 403,
+			message: 'Forbidden admin area cannot access this API'
+		})
+	}
+
 	const booking = await knex('bookings')
 		.join('users', 'bookings.user_id', 'users.user_id')
 		.join('rooms', 'bookings.room_id', 'rooms.room_id')

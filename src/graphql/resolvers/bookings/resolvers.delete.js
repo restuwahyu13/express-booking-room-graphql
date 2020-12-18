@@ -1,7 +1,14 @@
 import knex from '../../../databases'
 import { errorMessage } from '../../../utils/util.errorMessage'
 
-export const bookingsDelete = async (_, { id }) => {
+export const bookingsDelete = async (_, { id }, { isAuthRole }) => {
+	if (!isAuthRole) {
+		throw errorMessage({
+			status: 403,
+			message: 'Forbidden admin area cannot access this API'
+		})
+	}
+
 	const findBooking = await knex('bookings').where({ booking_id: id }).select()
 
 	if (findBooking.length < 1) {
