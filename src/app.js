@@ -8,6 +8,8 @@ export const app = express()
 export const server = new ApolloServer({
 	schema: applyMiddleware(makeExecutableSchema({ typeDefs, resolvers })),
 	uploads: false,
+	introspection: true,
+	playground: true,
 	formatError: ({ message, positions, originalError }) => ({ message, positions, originalError }),
 	formatResponse: ({ data, errors, http }) => ({ data, errors, http })
 })
