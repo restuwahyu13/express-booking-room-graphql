@@ -1,5 +1,11 @@
 ## Booking Room Graphql Api (Refactory)
 
+### Docker Image Registry
+
+```sh
+docker pull 705471/express-graphql:1.0
+```
+
 ### Graphql API Endpoint
 
 | Name                       | Endpoint                                      | method |
