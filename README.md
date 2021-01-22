@@ -1,4 +1,4 @@
-## Booking Room Graphql Api (Refactory)
+## Booking Room Graphql Api
 
 ### Docker Image Registry
 
